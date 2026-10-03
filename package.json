@@ -1,6 +1,9 @@
 {
   "name": "ryanair-de-ma-fare-finder",
   "private": true,
+  "engines": {
+    "node": "20.x"
+  },
   "workspaces": [
     "frontend",
     "backend"
