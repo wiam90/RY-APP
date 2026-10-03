@@ -2,7 +2,7 @@
   "name": "ryanair-de-ma-fare-finder",
   "private": true,
   "engines": {
-    "node": "20.x"
+    "node": "24.x"
   },
   "workspaces": [
     "frontend",
