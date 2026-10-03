@@ -1,0 +1,20 @@
+{
+  "name": "ryanair-de-ma-fare-finder",
+  "private": true,
+  "workspaces": [
+    "frontend",
+    "backend"
+  ],
+  "scripts": {
+    "dev": "concurrently -n backend,frontend -c \"#f6c915,#073590\" \"npm run dev --workspace backend\" \"npm run dev --workspace frontend\"",
+    "dev:backend": "npm run dev --workspace backend",
+    "dev:frontend": "npm run dev --workspace frontend",
+    "build": "npm run build --workspace frontend",
+    "start": "npm run start --workspace backend",
+    "preview": "concurrently -n backend,preview -c \"#073590,#f6c915\" \"PORT=9797 CORS_ORIGIN=http://localhost:4273 npm run start --workspace backend\" \"VITE_API_BASE_URL=http://localhost:9797 npm run preview --workspace frontend -- --port 4273\"",
+    "preview:frontend": "npm run preview --workspace frontend -- --port 4273"
+  },
+  "devDependencies": {
+    "concurrently": "^9.0.1"
+  }
+}

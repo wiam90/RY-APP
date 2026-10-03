@@ -1,0 +1,47 @@
+{
+  "name": "Ryanair App - Wiam",
+  "short_name": "Ryanair",
+  "description": "Günstigste Ryanair-Flüge zwischen Deutschland, Marokko und Spanien – dynamisch nach Stadt filtern",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "theme_color": "#073590",
+  "background_color": "#ffffff",
+  "categories": ["travel", "shopping"],
+  "icons": [
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect fill='%23073590' width='192' height='192'/><text x='50%' y='50%' text-anchor='middle' dy='0.3em' fill='%23f6c915' font-size='120'>✈</text></svg>",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect fill='%23073590' width='192' height='192'/><text x='50%' y='50%' text-anchor='middle' dy='0.3em' fill='%23ffffff' font-size='120'>✈</text></svg>",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
+    },
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><rect fill='%23073590' width='512' height='512'/><text x='50%' y='50%' text-anchor='middle' dy='0.3em' fill='%23f6c915' font-size='320'>✈</text></svg>",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Flüge suchen",
+      "short_name": "Suchen",
+      "description": "Günstigste Flüge finden",
+      "url": "/?mode=oneway",
+      "icons": [
+        {
+          "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect fill='%23f6c915' width='192' height='192'/><text x='50%' y='50%' text-anchor='middle' dy='0.3em' fill='%23073590' font-size='96'>✈</text></svg>",
+          "sizes": "192x192",
+          "type": "image/svg+xml"
+        }
+      ]
+    }
+  ]
+}

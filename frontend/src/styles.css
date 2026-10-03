@@ -1,0 +1,492 @@
+:root {
+  --ryanair-blue: #073590;
+  --ryanair-blue-deep: #05286c;
+  --ryanair-yellow: #f6c915;
+  --ryanair-cream: #f7f9ff;
+  --ryanair-sky: #dfe8ff;
+  --ink: #13203a;
+  --muted: #597095;
+  --line: rgba(7, 53, 144, 0.12);
+  --danger: #b42318;
+  --shadow: 0 18px 50px rgba(5, 40, 108, 0.12);
+  font-family: "Avenir Next", "Trebuchet MS", "Segoe UI", sans-serif;
+  color: var(--ink);
+  background: linear-gradient(180deg, #eef4ff 0%, #f9fbff 100%);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at top right, rgba(246, 201, 21, 0.26), transparent 20%),
+    linear-gradient(180deg, #eef4ff 0%, #f9fbff 100%);
+}
+
+button,
+input,
+select {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+.page-shell {
+  width: min(1260px, calc(100% - 32px));
+  margin: 0 auto;
+  padding: 24px 0 48px;
+}
+
+.hero {
+  display: grid;
+  gap: 18px;
+  margin-bottom: 24px;
+  padding: 28px;
+  border-radius: 28px;
+  background: linear-gradient(135deg, var(--ryanair-blue) 0%, #0b4dc7 100%);
+  color: white;
+  box-shadow: var(--shadow);
+}
+
+.hero-topbar {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.eyebrow {
+  margin: 0 0 12px;
+  font-size: 0.8rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.76);
+}
+
+.hero h1 {
+  margin: 0 0 12px;
+  max-width: 18ch;
+  font-size: clamp(2rem, 4vw, 3.7rem);
+  line-height: 1.05;
+  overflow-wrap: anywhere;
+}
+
+.hero-copy {
+  margin: 0;
+  max-width: 58ch;
+  font-size: 1rem;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.88);
+  overflow-wrap: anywhere;
+}
+
+.language-switcher {
+  display: grid;
+  gap: 6px;
+  justify-items: end;
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.88);
+}
+
+.language-switcher select {
+  min-width: 84px;
+  border: 1px solid rgba(255, 255, 255, 0.24);
+  border-radius: 999px;
+  padding: 10px 14px;
+  background: rgba(255, 255, 255, 0.14);
+  color: #ffffff;
+}
+
+.language-switcher option {
+  color: var(--ink);
+}
+
+.content-grid {
+  display: grid;
+  grid-template-columns: minmax(320px, 380px) 1fr;
+  gap: 24px;
+}
+
+.panel {
+  border: 1px solid var(--line);
+  border-radius: 26px;
+  background: rgba(255, 255, 255, 0.94);
+  box-shadow: var(--shadow);
+}
+
+.filter-panel {
+  position: sticky;
+  top: 18px;
+  padding: 22px;
+  align-self: start;
+}
+
+.panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 18px;
+  flex-wrap: wrap;
+}
+
+.panel-header h2,
+.section-header h2 {
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+.secondary-button {
+  border: 0;
+  border-radius: 999px;
+  padding: 12px 18px;
+  background: linear-gradient(180deg, var(--ryanair-yellow), #e6b900);
+  color: #2d2400;
+  font-weight: 700;
+}
+
+.secondary-button:disabled {
+  opacity: 0.7;
+  cursor: wait;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+label {
+  display: grid;
+  gap: 8px;
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+label input,
+label select {
+  width: 100%;
+  border: 1px solid rgba(7, 53, 144, 0.18);
+  border-radius: 16px;
+  padding: 12px 14px;
+  background: #f9fbff;
+  color: var(--ink);
+}
+
+.full-width {
+  grid-column: 1 / -1;
+}
+
+.weekend-field {
+  align-content: start;
+}
+
+.checkbox-row {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 48px;
+  padding: 12px 14px;
+  border: 1px solid rgba(7, 53, 144, 0.18);
+  border-radius: 16px;
+  background: #f9fbff;
+}
+
+.checkbox-row input {
+  width: 18px;
+  height: 18px;
+  margin: 0;
+}
+
+.checkbox-row span {
+  font-weight: 500;
+}
+
+.date-row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.status-strip {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 18px;
+  padding-top: 18px;
+  border-top: 1px solid var(--line);
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.inline-warning,
+.meta-hint,
+.section-empty {
+  margin: 12px 0 0;
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+.inline-warning,
+.error-panel {
+  color: var(--danger);
+}
+
+.results-column {
+  display: grid;
+  gap: 18px;
+}
+
+.section-panel,
+.loading-panel,
+.empty-panel,
+.error-panel {
+  padding: 18px;
+}
+
+.section-header span {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.section-description {
+  margin: 6px 0 0;
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+
+.airport-group {
+  border: 1px solid var(--line);
+  border-radius: 22px;
+  overflow: hidden;
+  background: linear-gradient(180deg, #ffffff 0%, var(--ryanair-cream) 100%);
+}
+
+.airport-group + .airport-group {
+  margin-top: 14px;
+}
+
+.airport-toggle {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(220px, 320px);
+  gap: 16px;
+  width: 100%;
+  border: 0;
+  background: transparent;
+  padding: 18px;
+  text-align: left;
+}
+
+.airport-city {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 800;
+  overflow-wrap: anywhere;
+}
+
+.airport-name {
+  margin: 6px 0 0;
+  color: var(--muted);
+  overflow-wrap: anywhere;
+}
+
+.airport-preview {
+  display: grid;
+  justify-items: end;
+  gap: 5px;
+  text-align: right;
+}
+
+.preview-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  padding: 6px 10px;
+  background: rgba(246, 201, 21, 0.18);
+  color: #584300;
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.airport-preview strong {
+  font-size: 1rem;
+  overflow-wrap: anywhere;
+}
+
+.airport-preview span {
+  color: var(--muted);
+  font-size: 0.9rem;
+  overflow-wrap: anywhere;
+}
+
+.preview-price {
+  min-width: 128px;
+  max-width: 100%;
+  justify-self: end;
+  color: #ffffff !important;
+  font-weight: 700;
+}
+
+.airport-flights {
+  padding: 0 18px 18px;
+}
+
+.flight-item {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 18px;
+  align-items: center;
+  padding: 16px 0;
+  border-top: 1px solid var(--line);
+}
+
+.flight-route,
+.flight-dates,
+.flight-meta {
+  margin: 0;
+}
+
+.flight-route {
+  font-weight: 800;
+  overflow-wrap: anywhere;
+}
+
+.flight-dates,
+.flight-meta {
+  margin-top: 6px;
+  color: var(--muted);
+  font-size: 0.92rem;
+  overflow-wrap: anywhere;
+}
+
+.flight-actions {
+  display: grid;
+  justify-items: end;
+  align-items: end;
+  gap: 10px;
+  text-align: right;
+  min-width: 140px;
+}
+
+.price-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 108px;
+  max-width: 100%;
+  padding: 10px 14px;
+  border-radius: 999px;
+  background: var(--ryanair-blue);
+  color: #ffffff;
+  font-weight: 800;
+  white-space: normal;
+  text-align: center;
+}
+
+.booking-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 140px;
+  max-width: 100%;
+  padding: 11px 16px;
+  border-radius: 999px;
+  background: linear-gradient(180deg, var(--ryanair-yellow), #e6b900);
+  color: #2d2400;
+  font-weight: 800;
+  text-decoration: none;
+  text-align: center;
+}
+
+@media (max-width: 1080px) {
+  .content-grid,
+  .airport-toggle,
+  .flight-item {
+    grid-template-columns: 1fr;
+  }
+
+  .airport-preview,
+  .flight-actions {
+    justify-items: start;
+  }
+
+  .hero h1 {
+    max-width: none;
+  }
+
+  .airport-preview,
+  .flight-actions {
+    text-align: left;
+  }
+
+  .preview-price {
+    justify-self: start;
+  }
+
+  .filter-panel {
+    position: static;
+  }
+}
+
+@media (max-width: 640px) {
+  .page-shell {
+    width: min(100% - 18px, 1260px);
+    padding-top: 12px;
+  }
+
+  .hero-topbar {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .language-switcher {
+    justify-items: start;
+  }
+
+  .hero h1 {
+    font-size: clamp(1.85rem, 9vw, 2.5rem);
+  }
+
+  .hero,
+  .filter-panel,
+  .section-panel,
+  .loading-panel,
+  .empty-panel,
+  .error-panel {
+    padding: 16px;
+    border-radius: 20px;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .date-row {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .airport-toggle,
+  .flight-item {
+    gap: 12px;
+  }
+
+  .price-pill,
+  .booking-link {
+    min-width: 0;
+  }
+}
