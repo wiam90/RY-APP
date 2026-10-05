@@ -482,12 +482,32 @@ export default function App() {
   }, [query.departureCountry, query.destinationCountry, query.mode, query.weekendFlex, query.startDate, query.endDate]);
 
   let visibleSections = filterSections(data?.sections ?? [], cityFilter);
-  // Beim Wochenendtrip: nur die Hinflug-Richtung anzeigen, da Rückflüge bereits enthalten sind
+  // Beim Wochenendtrip: nur die Hinflug-Richtung anzeigen und nach Wochentagen filtern
   if (query.mode === 'roundtrip') {
-    visibleSections = visibleSections.filter((section) => {
-      // Behalte nur Sections, die vom Abflugland zum Zielland gehen
-      return section.departureCountry === query.departureCountry && section.arrivalCountry === query.destinationCountry;
-    });
+    visibleSections = visibleSections
+      .filter((section) => {
+        // Behalte nur Sections, die vom Abflugland zum Zielland gehen
+        return section.departureCountry === query.departureCountry && section.arrivalCountry === query.destinationCountry;
+      })
+      .map((section) => ({
+        ...section,
+        groups: section.groups
+          .map((group) => ({
+            ...group,
+            flights: group.flights.filter((flight) => {
+              const outboundDay = new Date(flight.outboundDate).getDay();
+              const inboundDay = new Date(flight.inboundDate).getDay();
+              
+              // Wochenendtage: 5 = Freitag, 6 = Samstag, 0 = Sonntag
+              // Rückflüge sollten maximal Sonntag sein (nicht Montag-Donnerstag)
+              const weekendDays = [5, 6, 0];
+              
+              return weekendDays.includes(outboundDay) && weekendDays.includes(inboundDay);
+            }),
+          }))
+          .filter((group) => group.flights.length > 0), // Entferne Groups ohne Flights
+      }))
+      .filter((section) => section.groups.length > 0); // Entferne Sections ohne Groups
   }
   const availableDepartureAirports = meta?.departureAirportCount ?? 0;
   const departureCountries = sortCountries(meta?.departureCountries ?? [], language);
