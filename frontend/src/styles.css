@@ -490,3 +490,22 @@ label select {
     min-width: 0;
   }
 }
+
+/* Footer Styling */
+.app-footer {
+  margin-top: 48px;
+  padding: 24px 16px;
+  text-align: center;
+  background-color: rgba(7, 53, 144, 0.05);
+  border-top: 1px solid var(--line);
+  border-radius: 0;
+}
+
+.app-footer p {
+  margin: 0;
+  font-size: 0.875rem;
+  color: var(--muted);
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}

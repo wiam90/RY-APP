@@ -58,6 +58,7 @@ const TEXT = {
     fromCountryToCountry: '{from} nach {to}',
     cheapestFlightsFromCountryToCountry: 'Günstigste Flüge von {from} nach {to}',
     noIndexTitle: 'Ryanair App - Wiam',
+    footer: 'Diese App ist Open Source und nicht für kommerzielle Verwendung lizenziert.',
   },
   en: {
     eyebrow: 'Ryanair Fare Finder',
@@ -102,6 +103,7 @@ const TEXT = {
     fromCountryToCountry: '{from} to {to}',
     cheapestFlightsFromCountryToCountry: 'Cheapest flights from {from} to {to}',
     noIndexTitle: 'Ryanair App - Wiam',
+    footer: 'This app is open source and not licensed for commercial use.',
   },
   es: {
     eyebrow: 'Ryanair Fare Finder',
@@ -146,6 +148,7 @@ const TEXT = {
     fromCountryToCountry: '{from} a {to}',
     cheapestFlightsFromCountryToCountry: 'Vuelos más baratos de {from} a {to}',
     noIndexTitle: 'Ryanair App - Wiam',
+    footer: 'Esta aplicación es de código abierto y no está licenciada para uso comercial.',
   },
 };
 
@@ -477,7 +480,14 @@ export default function App() {
     return () => window.clearInterval(intervalId);
   }, [query.departureCountry, query.destinationCountry, query.mode, query.weekendFlex, query.startDate, query.endDate]);
 
-  const visibleSections = filterSections(data?.sections ?? [], cityFilter);
+  let visibleSections = filterSections(data?.sections ?? [], cityFilter);
+  // Beim Wochenendtrip: nur die Hinflug-Richtung anzeigen, da Rückflüge bereits enthalten sind
+  if (query.mode === 'roundtrip' && query.weekendFlex) {
+    visibleSections = visibleSections.filter((section) => {
+      // Behalte nur Sections, die vom Abflugland zum Zielland gehen
+      return section.departureCountry === query.departureCountry && section.arrivalCountry === query.destinationCountry;
+    });
+  }
   const availableDepartureAirports = meta?.departureAirportCount ?? 0;
   const departureCountries = sortCountries(meta?.departureCountries ?? [], language);
   const destinationCountries = sortCountries(meta?.destinationCountries ?? [], language);
@@ -702,6 +712,10 @@ export default function App() {
             : null}
         </section>
       </main>
+
+      <footer className="app-footer">
+        <p>{t('footer')}</p>
+      </footer>
     </div>
   );
 }
