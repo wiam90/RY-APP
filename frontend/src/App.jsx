@@ -484,6 +484,10 @@ export default function App() {
   let visibleSections = filterSections(data?.sections ?? [], cityFilter);
   // Beim Wochenendtrip: nur die Hinflug-Richtung anzeigen und nach Wochentagen filtern
   if (query.mode === 'roundtrip') {
+    // Wochenendtage: 5 = Freitag, 6 = Samstag, 0 = Sonntag
+    // Mit +/- 2 Tage: 4 = Donnerstag bis 1 = Montag
+    const allowedDays = query.weekendFlex ? [4, 5, 6, 0, 1] : [5, 6, 0];
+    
     visibleSections = visibleSections
       .filter((section) => {
         // Behalte nur Sections, die vom Abflugland zum Zielland gehen
@@ -498,11 +502,7 @@ export default function App() {
               const outboundDay = new Date(flight.outboundDate).getDay();
               const inboundDay = new Date(flight.inboundDate).getDay();
               
-              // Wochenendtage: 5 = Freitag, 6 = Samstag, 0 = Sonntag
-              // Rückflüge sollten maximal Sonntag sein (nicht Montag-Donnerstag)
-              const weekendDays = [5, 6, 0];
-              
-              return weekendDays.includes(outboundDay) && weekendDays.includes(inboundDay);
+              return allowedDays.includes(outboundDay) && allowedDays.includes(inboundDay);
             }),
           }))
           .filter((group) => group.flights.length > 0), // Entferne Groups ohne Flights
