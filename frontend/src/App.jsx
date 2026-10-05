@@ -515,6 +515,14 @@ export default function App() {
   const selectedDepartureName = getCountryName(query.departureCountry, language);
   const t = (key, values) => getTranslatedText(language, key, values);
 
+  const swapCountries = () => {
+    setQuery((current) => ({
+      ...current,
+      departureCountry: current.destinationCountry,
+      destinationCountry: current.departureCountry,
+    }));
+  };
+
   return (
     <div className="page-shell">
       <header className="hero">
@@ -543,33 +551,36 @@ export default function App() {
           </div>
 
           <div className="form-grid">
-            <label>
-              {t('departureCountry')}
-              <select
-                value={query.departureCountry}
-                onChange={(event) =>
-                  setQuery((current) => ({
-                    ...current,
-                    departureCountry: event.target.value,
-                  }))
-                }
-              >
-                {departureCountries.map((country) => (
-                  <option key={country.code} value={country.code}>{getCountryName(country.code, language)}</option>
-                ))}
-              </select>
-            </label>
-            <label>
-              {t('destinationCountry')}
-              <select
-                value={query.destinationCountry}
-                onChange={(event) => setQuery((current) => ({ ...current, destinationCountry: event.target.value }))}
-              >
-                {destinationCountries.map((country) => (
-                  <option key={country.code} value={country.code}>{getCountryName(country.code, language)}</option>
-                ))}
-              </select>
-            </label>
+            <div className="country-swap-wrapper">
+              <label>
+                {t('departureCountry')}
+                <select
+                  value={query.departureCountry}
+                  onChange={(event) =>
+                    setQuery((current) => ({
+                      ...current,
+                      departureCountry: event.target.value,
+                    }))
+                  }
+                >
+                  {departureCountries.map((country) => (
+                    <option key={country.code} value={country.code}>{getCountryName(country.code, language)}</option>
+                  ))}
+                </select>
+              </label>
+              <button className="swap-button" type="button" onClick={swapCountries} title="Swap departure and destination">⇄</button>
+              <label>
+                {t('destinationCountry')}
+                <select
+                  value={query.destinationCountry}
+                  onChange={(event) => setQuery((current) => ({ ...current, destinationCountry: event.target.value }))}
+                >
+                  {destinationCountries.map((country) => (
+                    <option key={country.code} value={country.code}>{getCountryName(country.code, language)}</option>
+                  ))}
+                </select>
+              </label>
+            </div>
             <label>
               {t('searchMode')}
               <select
