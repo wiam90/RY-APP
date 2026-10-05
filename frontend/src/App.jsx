@@ -483,7 +483,7 @@ export default function App() {
 
   let visibleSections = filterSections(data?.sections ?? [], cityFilter);
   // Beim Wochenendtrip: nur die Hinflug-Richtung anzeigen, da Rückflüge bereits enthalten sind
-  if (query.mode === 'roundtrip' && query.weekendFlex) {
+  if (query.mode === 'roundtrip') {
     visibleSections = visibleSections.filter((section) => {
       // Behalte nur Sections, die vom Abflugland zum Zielland gehen
       return section.departureCountry === query.departureCountry && section.arrivalCountry === query.destinationCountry;
