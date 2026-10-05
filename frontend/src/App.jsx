@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { Analytics } from '@vercel/analytics/react';
 import { fetchMeta, searchFlights } from './api.js';
 
 const AUTO_REFRESH_MS = 5 * 60 * 1000;
@@ -716,6 +717,7 @@ export default function App() {
       <footer className="app-footer">
         <p>{t('footer')}</p>
       </footer>
+      <Analytics />
     </div>
   );
 }
