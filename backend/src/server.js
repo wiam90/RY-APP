@@ -3,7 +3,7 @@ import express from 'express';
 import { getMeta, searchFlights } from './ryanair.js';
 
 const app = express();
-const PORT = process.env.PORT || 8787;
+const PORT = process.env.BACKEND_PORT || 8787;
 
 function getAllowedOrigins() {
   const rawOrigins = process.env.CORS_ORIGIN || '';

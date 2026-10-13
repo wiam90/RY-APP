@@ -1,0 +1,8 @@
+{
+  "name": "Ryanair App - Wiam",
+  "description": "Günstigste Ryanair-Flüge zwischen Deutschland, Marokko und Spanien",
+  "capabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ],
+  "permissions": []
+}

@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
-import { Analytics } from '@vercel/analytics/react';
 import { fetchMeta, searchFlights } from './api.js';
+
+const Analytics = () => null;
 
 const AUTO_REFRESH_MS = 5 * 60 * 1000;
 const RANGE_PRESETS = [30, 60, 90];
