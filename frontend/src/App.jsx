@@ -485,9 +485,10 @@ export default function App() {
   let visibleSections = filterSections(data?.sections ?? [], cityFilter);
   // Beim Wochenendtrip: nur die Hinflug-Richtung anzeigen und nach Wochentagen filtern
   if (query.mode === 'roundtrip') {
-    // Wochenendtage: 5 = Freitag, 6 = Samstag, 0 = Sonntag
-    // Mit +/- 2 Tage: 4 = Donnerstag bis 1 = Montag
-    const allowedDays = query.weekendFlex ? [4, 5, 6, 0, 1] : [5, 6, 0];
+    // Strict: Hinflug Fr/Sa (5, 6), Rückflug So/Mo (0, 1)
+    // Flex (+/- 2 Tage): Hinflug Do/Fr/Sa (4, 5, 6), Rückflug So/Mo/Di (0, 1, 2)
+    const allowedOutbound = query.weekendFlex ? [4, 5, 6] : [5, 6];
+    const allowedInbound = query.weekendFlex ? [0, 1, 2] : [0, 1];
     
     visibleSections = visibleSections
       .filter((section) => {
@@ -497,18 +498,31 @@ export default function App() {
       .map((section) => ({
         ...section,
         groups: section.groups
-          .map((group) => ({
-            ...group,
-            flights: group.flights.filter((flight) => {
+          .map((group) => {
+            const filteredFlights = group.flights.filter((flight) => {
               const outboundDay = new Date(flight.outboundDate).getDay();
-              const inboundDay = new Date(flight.inboundDate).getDay();
+              const inboundDay = flight.inboundDate ? new Date(flight.inboundDate).getDay() : null;
               
-              return allowedDays.includes(outboundDay) && allowedDays.includes(inboundDay);
-            }),
-          }))
-          .filter((group) => group.flights.length > 0), // Entferne Groups ohne Flights
+              const isOutboundOk = allowedOutbound.includes(outboundDay);
+              const isInboundOk = inboundDay === null || allowedInbound.includes(inboundDay);
+              return isOutboundOk && isInboundOk;
+            });
+
+            if (filteredFlights.length === 0) {
+              return null;
+            }
+
+            return {
+              ...group,
+              flights: filteredFlights,
+              previewFlight: filteredFlights[0] ?? null,
+              lowestPrice: filteredFlights[0]?.totalPrice ?? group.lowestPrice,
+              totalFlights: filteredFlights.length,
+            };
+          })
+          .filter(Boolean),
       }))
-      .filter((section) => section.groups.length > 0); // Entferne Sections ohne Groups
+      .filter((section) => section.groups.length > 0);
   }
   const availableDepartureAirports = meta?.departureAirportCount ?? 0;
   const departureCountries = sortCountries(meta?.departureCountries ?? [], language);

@@ -423,8 +423,10 @@ function matchesWeekendPattern(outboundDate, inboundDate, durationDays, weekendF
     return true;
   }
 
-  const outboundDays = weekendFlex ? [2, 3, 4, 5, 6] : [4, 5, 6];
-  const inboundDays = weekendFlex ? [0, 1, 2, 3] : [0, 1];
+  // Strict: Hinflug Fr/Sa (5, 6), Rückflug So/Mo (0, 1)
+  // Flex (+/- 2 Tage): Hinflug Do/Fr/Sa (4, 5, 6), Rückflug So/Mo/Di (0, 1, 2)
+  const outboundDays = weekendFlex ? [4, 5, 6] : [5, 6];
+  const inboundDays = weekendFlex ? [0, 1, 2] : [0, 1];
   const maxDuration = weekendFlex ? 5 : 3;
 
   return (
