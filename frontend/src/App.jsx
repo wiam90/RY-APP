@@ -16,6 +16,12 @@ const LOCALES = {
   es: 'es-ES',
 };
 
+const DEFAULT_COUNTRIES = [
+  { code: 'de', name: 'Deutschland' },
+  { code: 'ma', name: 'Marokko' },
+  { code: 'es', name: 'Spanien' },
+];
+
 const TEXT = {
   de: {
     eyebrow: 'Ryanair Fare Finder',
@@ -411,28 +417,30 @@ export default function App() {
   const monthOptions = createMonthOptions(language);
 
   async function loadMeta() {
-    const payload = await fetchMeta(query.departureCountry);
-    setMeta(payload);
-    setQuery((current) => {
-      const nextDepartureCountry = payload.defaultDepartureCountry || current.departureCountry;
-      const availableCountries = payload.destinationCountries ?? [];
-      const isCurrentCountryValid = availableCountries.some(
-        (country) => country.code === current.destinationCountry
-      );
+    try {
+      const payload = await fetchMeta(query.departureCountry);
+      setMeta(payload);
+      setQuery((current) => {
+        const availableCountries = payload.destinationCountries ?? [];
+        if (availableCountries.length === 0) {
+          return current;
+        }
+        const isCurrentCountryValid = availableCountries.some(
+          (country) => country.code === current.destinationCountry
+        );
 
-      if (isCurrentCountryValid) {
+        if (isCurrentCountryValid) {
+          return current;
+        }
+
         return {
           ...current,
-          departureCountry: nextDepartureCountry,
+          destinationCountry: payload.defaultDestinationCountry || availableCountries[0]?.code || 'ma',
         };
-      }
-
-      return {
-        ...current,
-        departureCountry: nextDepartureCountry,
-        destinationCountry: payload.defaultDestinationCountry || availableCountries[0]?.code || 'ma',
-      };
-    });
+      });
+    } catch {
+      // Gracefully retain current options if meta fetch encounters network issues
+    }
   }
 
   async function loadResults(options = {}) {
@@ -525,8 +533,10 @@ export default function App() {
       .filter((section) => section.groups.length > 0);
   }
   const availableDepartureAirports = meta?.departureAirportCount ?? 0;
-  const departureCountries = sortCountries(meta?.departureCountries ?? [], language);
-  const destinationCountries = sortCountries(meta?.destinationCountries ?? [], language);
+  const rawDepartureCountries = meta?.departureCountries?.length ? meta.departureCountries : DEFAULT_COUNTRIES;
+  const rawDestinationCountries = meta?.destinationCountries?.length ? meta.destinationCountries : DEFAULT_COUNTRIES;
+  const departureCountries = sortCountries(rawDepartureCountries, language);
+  const destinationCountries = sortCountries(rawDestinationCountries, language);
   const selectedDepartureName = getCountryName(query.departureCountry, language);
   const t = (key, values) => getTranslatedText(language, key, values);
 

@@ -1,12 +1,4 @@
-const path = require('path');
-const { pathToFileURL } = require('url');
-
-function withCommonHeaders(response) {
-  response.setHeader('X-Robots-Tag', 'noindex, nofollow, noarchive, nosnippet');
-  response.setHeader('Access-Control-Allow-Origin', '*');
-  response.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
-  response.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-}
+import { searchFlights } from './lib/ryanair.js';
 
 function defaultDateRange() {
   const start = new Date();
@@ -20,13 +12,11 @@ function defaultDateRange() {
   };
 }
 
-async function loadLib() {
-  const libPath = path.join(__dirname, '..', 'frontend', 'api', 'lib', 'ryanair.js');
-  return import(pathToFileURL(libPath).href);
-}
-
-module.exports = async function handler(request, response) {
-  withCommonHeaders(response);
+export default async function handler(request, response) {
+  response.setHeader('X-Robots-Tag', 'noindex, nofollow, noarchive, nosnippet');
+  response.setHeader('Access-Control-Allow-Origin', '*');
+  response.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
+  response.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
   if (request.method === 'OPTIONS') {
     response.status(200).end();
@@ -45,7 +35,6 @@ module.exports = async function handler(request, response) {
   const weekendFlex = request.query.weekendFlex === '1' || request.query.weekendFlex === 'true';
 
   try {
-    const { searchFlights } = await loadLib();
     const payload = await searchFlights({
       departureCountry,
       destinationCountry,
@@ -67,4 +56,4 @@ module.exports = async function handler(request, response) {
       message: error.message,
     });
   }
-};
+}

@@ -1,20 +1,10 @@
-const path = require('path');
-const { pathToFileURL } = require('url');
+import { getMeta } from './lib/ryanair.js';
 
-function withCommonHeaders(response) {
+export default async function handler(request, response) {
   response.setHeader('X-Robots-Tag', 'noindex, nofollow, noarchive, nosnippet');
   response.setHeader('Access-Control-Allow-Origin', '*');
   response.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
   response.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-}
-
-async function loadLib() {
-  const libPath = path.join(__dirname, '..', 'frontend', 'api', 'lib', 'ryanair.js');
-  return import(pathToFileURL(libPath).href);
-}
-
-module.exports = async function handler(request, response) {
-  withCommonHeaders(response);
 
   if (request.method === 'OPTIONS') {
     response.status(200).end();
@@ -27,7 +17,6 @@ module.exports = async function handler(request, response) {
   }
 
   try {
-    const { getMeta } = await loadLib();
     const departureCountry = String(request.query.departureCountry || 'de').toLowerCase();
     const force = request.query.force === '1';
 
@@ -40,4 +29,4 @@ module.exports = async function handler(request, response) {
       message: error.message,
     });
   }
-};
+}
