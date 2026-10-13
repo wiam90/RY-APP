@@ -284,6 +284,23 @@ function getSectionCopy(section, language) {
   const from = getCountryName(section.departureCountry, language);
   const to = getCountryName(section.arrivalCountry, language);
 
+  if (section.departureCountry === section.arrivalCountry) {
+    const domesticTitles = {
+      de: `Inlandsflüge in ${from}`,
+      en: `Domestic flights in ${from}`,
+      es: `Vuelos nacionales en ${from}`,
+    };
+    const domesticDescriptions = {
+      de: `Günstigste Flüge innerhalb von ${from}`,
+      en: `Cheapest flights within ${from}`,
+      es: `Vuelos más baratos dentro de ${from}`,
+    };
+    return {
+      title: domesticTitles[language] || domesticTitles.de,
+      description: domesticDescriptions[language] || domesticDescriptions.de,
+    };
+  }
+
   return {
     title: getTranslatedText(language, 'fromCountryToCountry', { from, to }),
     description: getTranslatedText(language, 'cheapestFlightsFromCountryToCountry', { from, to }),
@@ -425,9 +442,9 @@ export default function App() {
         if (availableCountries.length === 0) {
           return current;
         }
-        const isCurrentCountryValid = availableCountries.some(
-          (country) => country.code === current.destinationCountry
-        );
+        const isCurrentCountryValid =
+          current.destinationCountry === current.departureCountry ||
+          availableCountries.some((country) => country.code === current.destinationCountry);
 
         if (isCurrentCountryValid) {
           return current;
@@ -534,7 +551,10 @@ export default function App() {
   }
   const availableDepartureAirports = meta?.departureAirportCount ?? 0;
   const rawDepartureCountries = meta?.departureCountries?.length ? meta.departureCountries : DEFAULT_COUNTRIES;
-  const rawDestinationCountries = meta?.destinationCountries?.length ? meta.destinationCountries : DEFAULT_COUNTRIES;
+  const rawDestBase = meta?.destinationCountries?.length ? meta.destinationCountries : DEFAULT_COUNTRIES;
+  const rawDestinationCountries = rawDestBase.some((c) => c.code === query.departureCountry)
+    ? rawDestBase
+    : [{ code: query.departureCountry, name: getCountryName(query.departureCountry, language) }, ...rawDestBase];
   const departureCountries = sortCountries(rawDepartureCountries, language);
   const destinationCountries = sortCountries(rawDestinationCountries, language);
   const selectedDepartureName = getCountryName(query.departureCountry, language);

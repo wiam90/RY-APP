@@ -163,6 +163,18 @@ function buildSectionDefinitions(departureCountry, destinationCountry) {
   const departureSlug = slugifyCountryName(departureName);
   const destinationSlug = slugifyCountryName(destinationName);
 
+  if (departureCountry === destinationCountry) {
+    return [
+      {
+        id: `${departureSlug}-inland`,
+        title: `Inlandsflüge ${departureName}`,
+        description: `Günstigste Inlandsflüge in ${departureName}`,
+        departureCountry,
+        arrivalCountry: destinationCountry,
+      },
+    ];
+  }
+
   return [
     {
       id: `${departureSlug}-nach-${destinationSlug}`,
@@ -221,7 +233,9 @@ async function getEligibleNetwork(departureCountry, destinationCountry, force = 
     const allowedCountries = new Set(
       airport.countryCode === departureCountry ? [destinationCountry] : [departureCountry]
     );
-    const arrivals = routes.filter((route) => allowedCountries.has(route.countryCode));
+    const arrivals = routes.filter(
+      (route) => allowedCountries.has(route.countryCode) && route.iataCode !== airport.iataCode
+    );
 
     return {
       departureAirport: airport,
@@ -273,11 +287,10 @@ async function getDestinationCountries(departureCountry, force = false) {
   });
 
   const destinationCodes = new Set();
+  destinationCodes.add(departureCountry);
   for (const routes of routesPerDeparture) {
     for (const route of routes) {
-      if (route.countryCode !== departureCountry) {
-        destinationCodes.add(route.countryCode);
-      }
+      destinationCodes.add(route.countryCode);
     }
   }
 
